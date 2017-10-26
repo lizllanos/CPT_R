@@ -24,18 +24,23 @@ run_cpt=function(x,y,GI,pear,afc,prob,roc_a,roc_b,cc,path_run,m_x,m_y,m_cca,t, x
   echo %mode_y%
   echo 1
   echo %mode_cca%
+  echo 532
+  echo 1981
+  echo 2015
+  echo N
+  echo 2
   echo 9
   echo 1
-  %echo 7
-  %echo 32
+  echo 7
+  echo 35
   echo 554
   echo 2
   echo %transfor%
   echo 112
   echo %path_GI%
-  echo 311 %312 retroactiva
-  echo 24 %tamaño de entrenamiento
-  echo 1 %tamaño del periodo
+  echo 312
+  echo 24 
+  echo 1 
   echo 451
   echo 454
   echo 455
@@ -112,7 +117,10 @@ for (i in 1:length(x.files)){
   out.name = paste0(which(month.abb==substring(x.files[i],5,7)),"_",substring(x.files[i],1,15),"_")
   run_cpt(x = paste0("input/CFSV2/",x.files[i]),y="input/honduras_chirps_data.txt",
         GI=paste0("output/",out.name,"goodness_index.txt"),pear=paste0("output/",out.name,"pearson.txt"),afc=paste0("output/",out.name,"kendall.txt"),
-        prob=paste0("output/",out.name,"prob.txt"),cc=paste0("output/",out.name,"modos_cc.txt"),path_run="run.bat",m_x=5,m_y=5,m_cca=3,t=541)
+        prob=paste0("output/",out.name,"prob.txt"),cc=paste0("output/",out.name,"modos_cc.txt"),path_run="run.bat",m_x=5,m_y=5,m_cca=3,t=541,
+        x_load=paste0("output/",out.name,"x_load.txt"), x_serie=paste0("output/",out.name,"x_serie.txt"),y_load=paste0("output/",out.name,"y_load.txt"), 
+        y_serie=paste0("output/",out.name,"y_serie.txt"),det_forecast=paste0("output/",out.name,"det_forecast.txt"),det_forecast_limit=paste0("output/",out.name,"det_forecast_limit.txt"),
+        roc_a=paste0("output/",out.name,"roc_a.txt"),roc_b=paste0("output/",out.name,"roc_b.txt"))
 
   rm(out.name)
   gc(reset = TRUE)
