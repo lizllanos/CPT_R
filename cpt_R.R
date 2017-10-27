@@ -1,3 +1,11 @@
+# Created in: October 2017
+# Made by: Lizeth Llanos, Diego Agudelo and Alejandra Esquivel
+# Description: This script run the cpt version in batch for windows from R. This will be use for the forecast evaluation in Honduras
+
+
+# Function Run CPT batch -----------------------------------------------------------
+
+
 setwd("C:/Users/lllanos/Desktop/cpt_batch")
 dir.create("output")
 
@@ -113,6 +121,10 @@ run_cpt=function(x,y,GI,pear,afc,prob,roc_a,roc_b,cc,path_run,m_x,m_y,m_cca,t, n
 }
 
 x.files = list.files("input/CFSV2/")
+
+
+# Run for all the input files -------------------------------------------------
+
 
 for (i in 1:length(x.files)){
   out.name = paste0(which(month.abb==substring(x.files[i],5,7)),"_",substring(x.files[i],1,15),"_")
