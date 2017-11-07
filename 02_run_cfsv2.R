@@ -9,11 +9,12 @@
 setwd("C:/Users/lllanos/Desktop/cpt_batch")
 dir.create("output")
 
-run_cpt=function(x,y,GI,pear,afc,prob,roc_a,roc_b,cc,path_run,m_x,m_y,m_cca,t, n_training,x_load, x_serie,y_load, y_serie,det_forecast,det_forecast_limit){
+run_cpt=function(x,y,GI,pear,afc,prob,roc_a,roc_b,cc,path_run,m_x,m_y,m_cca,t, n_training,x_load, 
+                 x_serie,y_load, y_serie,det_forecast,det_forecast_limit,
+                 pear_rt,afc_rt,prob_rt,roc_a_rt,roc_b_rt,det_forecast_rt,det_forecast_limit_rt){
     cmd <- "@echo off
   (
   echo 611
-  echo 545
   echo 1
   echo %path_x%
   echo 30
@@ -67,27 +68,42 @@ run_cpt=function(x,y,GI,pear,afc,prob,roc_a,roc_b,cc,path_run,m_x,m_y,m_cca,t, n
   echo 111
   echo 501
   echo %path_prob%
-  echo 111
   echo 411
   echo %path_x_load%
-  echo 111
   echo 412
   echo %path_x_serie%
-  echo 111
   echo 421
   echo %path_y_load%
-  echo 111
   echo 422
   echo %path_y_serie%
-  echo 111
   echo 511
   echo %path_det_forecast%
-  echo 111
   echo 513
   echo %path_det_forecast_limit%
-  echo 401
-  echo %path_cc%
-  echo 0
+    echo 203
+    echo %path_prob_rt%
+    echo 202
+    echo %path_det_forecast_rt%
+    echo 204
+    echo %path_det_forecast_limit_rt%
+    echo 401
+    echo %path_cc%
+    echo 0
+  
+    echo 423
+    echo 1
+    echo %path_pear_rt%
+    echo 423
+    echo 3
+    echo %path_2afc_rt%
+    echo 423
+    echo 10
+    echo %path_roc_b_rt%
+    echo 423
+    echo 11
+    echo %path_roc_a_rt%
+   
+  
   echo 0
   ) | CPT_batch.exe"
   
@@ -99,13 +115,20 @@ run_cpt=function(x,y,GI,pear,afc,prob,roc_a,roc_b,cc,path_run,m_x,m_y,m_cca,t, n
   cmd<-gsub("%path_roc_b%",roc_b,cmd)
   cmd<-gsub("%path_roc_a%",roc_a,cmd)
   cmd<-gsub("%path_prob%",prob,cmd)
+  
+  cmd<-gsub("%path_pear_rt%",pear_rt,cmd)
+  cmd<-gsub("%path_2afc_rt%",afc_rt,cmd)
+  cmd<-gsub("%path_roc_b_rt%",roc_b_rt,cmd)
+  cmd<-gsub("%path_roc_a_rt%",roc_a_rt,cmd)
+  cmd<-gsub("%path_prob_rt%",prob_rt,cmd)
+  
+  
   cmd<-gsub("%path_cc%",cc,cmd)
   cmd<-gsub("%mode_x%",m_x,cmd)
   cmd<-gsub("%mode_y%",m_y,cmd)
   cmd<-gsub("%mode_cca%",m_cca,cmd)
   cmd<-gsub("%transfor%",t,cmd)
   cmd<-gsub("%training%",n_training,cmd)
-  
   cmd<-gsub("%path_x_load%",x_load,cmd)
   cmd<-gsub("%path_x_serie%",x_serie,cmd)
   cmd<-gsub("%path_y_load%",y_load,cmd)
@@ -113,6 +136,9 @@ run_cpt=function(x,y,GI,pear,afc,prob,roc_a,roc_b,cc,path_run,m_x,m_y,m_cca,t, n
   cmd<-gsub("%path_y_serie%",y_serie,cmd)
   cmd<-gsub("%path_det_forecast%",det_forecast,cmd)
   cmd<-gsub("%path_det_forecast_limit%",det_forecast_limit,cmd)
+
+  cmd<-gsub("%path_det_forecast_rt%",det_forecast_rt,cmd)
+  cmd<-gsub("%path_det_forecast_limit_rt%",det_forecast_limit_rt,cmd)
   
   
   write(cmd,path_run)
@@ -120,24 +146,28 @@ run_cpt=function(x,y,GI,pear,afc,prob,roc_a,roc_b,cc,path_run,m_x,m_y,m_cca,t, n
   
 }
 
-x.files = list.files("input/CFSV2/")
 
 
 # Run for all the input files -------------------------------------------------
-
+x.files = list.files("input/CFSV2/")
 
 for (i in 1:length(x.files)){
-  out.name = paste0(which(month.abb==substring(x.files[i],5,7)),"_",substring(x.files[i],1,15),"_")
+  out.name = paste0(sprintf("%02d",which(month.abb==substring(x.files[i],5,7))),"_",substring(x.files[i],1,15),"_")
+  
   run_cpt(x = paste0("input/CFSV2/",x.files[i]),y="input/honduras_chirps_data.txt",
         GI=paste0("output/",out.name,"goodness_index.txt"),pear=paste0("output/",out.name,"pearson.txt"),afc=paste0("output/",out.name,"kendall.txt"),
-        prob=paste0("output/",out.name,"prob.txt"),cc=paste0("output/",out.name,"modos_cc.txt"),path_run="run.bat",m_x=5,m_y=5,m_cca=3,t=541,
+        prob=paste0("output/",out.name,"prob.txt"),cc=paste0("output/",out.name,"modos_cc.txt"),path_run=paste0("run",out.name,".bat"),m_x=5,m_y=5,m_cca=3,t=541,
         x_load=paste0("output/",out.name,"x_load.txt"), x_serie=paste0("output/",out.name,"x_serie.txt"),y_load=paste0("output/",out.name,"y_load.txt"), 
         y_serie=paste0("output/",out.name,"y_serie.txt"),det_forecast=paste0("output/",out.name,"det_forecast.txt"),det_forecast_limit=paste0("output/",out.name,"det_forecast_limit.txt"),
         roc_a=paste0("output/",out.name,"roc_a.txt"),roc_b=paste0("output/",out.name,"roc_b.txt"),
+        det_forecast_rt=paste0("output/",out.name,"det_forecast_rt.txt"),det_forecast_limit_rt=paste0("output/",out.name,"det_forecast_limit_rt.txt"),
+        roc_a_rt=paste0("output/",out.name,"roc_a_rt.txt"),roc_b_rt=paste0("output/",out.name,"roc_b_rt.txt"),
+        pear_rt=paste0("output/",out.name,"pearson_rt.txt"),afc_rt=paste0("output/",out.name,"kendall_rt.txt"),prob_rt=paste0("output/",out.name,"prob_rt.txt"),
         n_training = ifelse(x.files[i]=="Sep_Mar-Apr-May.tsv" | x.files[i]=="Nov_Mar-Apr-May.tsv" |x.files[i]=="Oct_Apr-May-Jun.tsv" |x.files[i]=="Dec_Apr-May-Jun.tsv",34,35))
 
   rm(out.name)
   gc(reset = TRUE)
+  cat(paste0("Forecast for ",x.files[i],"\n"))
   
 }
 

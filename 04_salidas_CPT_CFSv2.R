@@ -37,6 +37,9 @@ data_combi <- Map(function(x,y,z) cbind.data.frame(trimester=z,lead=x,goodness=y
 data_final <- do.call(what = "rbind",args =data_combi)
 data_final$lead=factor(data_final$lead,levels(data_final$lead)[c(3,1,2)])
 
+data_final$years <- rep(2006:2016,length(value_good))
+write.csv()
+
 box <- ggplot(data_final, aes(as.factor(trimester), goodness, fill = lead))
 box <- box + scale_x_discrete( labels = c("MAM","AMJ","ASO","DEF"))
 box <- box + geom_boxplot( width=0.6, position = position_dodge(width = 0.7))
