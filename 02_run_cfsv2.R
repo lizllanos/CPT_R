@@ -11,7 +11,7 @@ dir.create("output")
 
 run_cpt=function(x,y,trim,GI,pear,afc,prob,roc_a,roc_b,cc,path_run,m_x,m_y,m_cca,t, n_training,x_load, 
                  x_serie,y_load, y_serie,det_forecast,det_forecast_limit,
-                 pear_rt,afc_rt,prob_rt,roc_a_rt,roc_b_rt,det_forecast_rt,det_forecast_limit_rt){
+                 pear_rt,afc_rt,prob_rt,roc_a_rt,roc_b_rt,det_forecast_rt,det_forecast_limit_rt,n_ret){
     cmd <- "@echo off
   (
   echo 611
@@ -48,7 +48,7 @@ run_cpt=function(x,y,trim,GI,pear,afc,prob,roc_a,roc_b,cc,path_run,m_x,m_y,m_cca
   echo 112
   echo %path_GI%
   echo 312
-  echo 24 
+  echo %n_ret% 
   echo 1 
   echo 451
   echo 454
@@ -106,7 +106,8 @@ run_cpt=function(x,y,trim,GI,pear,afc,prob,roc_a,roc_b,cc,path_run,m_x,m_y,m_cca
   
   echo 0
   ) | CPT_batch.exe"
-  
+    
+  cmd<-gsub("%n_ret%",n_ret,cmd)
   cmd<-gsub("%path_x%",x,cmd)
   cmd<-gsub("%path_y%",y,cmd)
   cmd<-gsub("%path_GI%",GI,cmd)
@@ -153,7 +154,8 @@ x.files = list.files("input/CFSV2/")
 
 for (i in 1:length(x.files)){
   out.name = paste0(sprintf("%02d",which(month.abb==substring(x.files[i],5,7))),"_",substring(x.files[i],1,15),"_")
-  trim = ifelse(i==4,1,2)
+  trim = ifelse(x.files[i]=="Feb_Aug-Sep-Oct.tsv",1,2)
+  
   run_cpt(x = paste0("input/CFSV2/",x.files[i]),y="input/honduras_chirps_data.txt", trim=trim,
         GI=paste0("output/",out.name,"goodness_index.txt"),pear=paste0("output/",out.name,"pearson.txt"),afc=paste0("output/",out.name,"kendall.txt"),
         prob=paste0("output/",out.name,"prob.txt"),cc=paste0("output/",out.name,"modos_cc.txt"),path_run=paste0("run_",out.name,".bat"),m_x=5,m_y=5,m_cca=3,t=541,
@@ -163,7 +165,8 @@ for (i in 1:length(x.files)){
         det_forecast_rt=paste0("output/",out.name,"det_forecast_rt.txt"),det_forecast_limit_rt=paste0("output/",out.name,"det_forecast_limit_rt.txt"),
         roc_a_rt=paste0("output/",out.name,"roc_a_rt.txt"),roc_b_rt=paste0("output/",out.name,"roc_b_rt.txt"),
         pear_rt=paste0("output/",out.name,"pearson_rt.txt"),afc_rt=paste0("output/",out.name,"kendall_rt.txt"),prob_rt=paste0("output/",out.name,"prob_rt.txt"),
-        n_training = ifelse(x.files[i]=="Sep_Mar-Apr-May.tsv" | x.files[i]=="Nov_Mar-Apr-May.tsv" |x.files[i]=="Oct_Apr-May-Jun.tsv" |x.files[i]=="Dec_Apr-May-Jun.tsv",34,35))
+        n_training = ifelse(x.files[i]=="Sep_Mar-Apr-May.tsv" | x.files[i]=="Nov_Mar-Apr-May.tsv" |x.files[i]=="Oct_Apr-May-Jun.tsv" |x.files[i]=="Dec_Apr-May-Jun.tsv",34,35),
+        n_ret = ifelse(x.files[i]=="Sep_Mar-Apr-May.tsv" | x.files[i]=="Nov_Mar-Apr-May.tsv" |x.files[i]=="Oct_Apr-May-Jun.tsv" |x.files[i]=="Dec_Apr-May-Jun.tsv",23,24))
 
   rm(out.name)
   gc(reset = TRUE)
