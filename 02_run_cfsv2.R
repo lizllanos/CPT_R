@@ -33,6 +33,8 @@ run_cpt=function(x,y,trim,GI,pear,afc,prob,roc_a,roc_b,cc,path_run,m_x,m_y,m_cca
   echo %mode_y%
   echo 1
   echo %mode_cca%
+  echo 6
+  echo 2016
   echo 532
   echo 1981
   echo 2015
@@ -165,7 +167,7 @@ for (i in 1:length(x.files)){
         det_forecast_rt=paste0("output/",out.name,"det_forecast_rt.txt"),det_forecast_limit_rt=paste0("output/",out.name,"det_forecast_limit_rt.txt"),
         roc_a_rt=paste0("output/",out.name,"roc_a_rt.txt"),roc_b_rt=paste0("output/",out.name,"roc_b_rt.txt"),
         pear_rt=paste0("output/",out.name,"pearson_rt.txt"),afc_rt=paste0("output/",out.name,"kendall_rt.txt"),prob_rt=paste0("output/",out.name,"prob_rt.txt"),
-        n_training = ifelse(x.files[i]=="Sep_Mar-Apr-May.tsv" | x.files[i]=="Nov_Mar-Apr-May.tsv" |x.files[i]=="Oct_Apr-May-Jun.tsv" |x.files[i]=="Dec_Apr-May-Jun.tsv",34,35),
+        n_training = ifelse(x.files[i]=="Sep_Mar-Apr-May.tsv" | x.files[i]=="Nov_Mar-Apr-May.tsv" |x.files[i]=="Oct_Apr-May-Jun.tsv" |x.files[i]=="Dec_Apr-May-Jun.tsv",33,34),
         n_ret = ifelse(x.files[i]=="Sep_Mar-Apr-May.tsv" | x.files[i]=="Nov_Mar-Apr-May.tsv" |x.files[i]=="Oct_Apr-May-Jun.tsv" |x.files[i]=="Dec_Apr-May-Jun.tsv",23,24))
 
   rm(out.name)
