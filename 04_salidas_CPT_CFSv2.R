@@ -33,14 +33,19 @@ value_good <- Map(function(x,y)as.numeric(x[y,8]),data,pos_good)
  
 data_combi <- Map(function(x,y,z) cbind.data.frame(trimester=z,lead=x,goodness=y),lead_times,value_good,names_month)
 data_final <- do.call(what = "rbind",args =data_combi)
-data_final$lead=factor(data_final$lead,levels(data_final$lead)[c(3,1,2)])
+data_final$lead=factor(data_final$lead,levels(data_final$lead))
 
 data_final$years <- rep(2006:2016,length(value_good))
-write.csv()
+write.csv(data_final,"goodness_all_cfsv2.csv",row.names = F)
+
 
 box <- ggplot(data_final, aes(as.factor(trimester), goodness, fill = lead))
 box <- box + scale_x_discrete( labels = c("MAM","AMJ","ASO","DEF"))
 box <- box + geom_boxplot( width=0.6, position = position_dodge(width = 0.7))
 box <- box + labs(y="Goodness index", x="Season",fill="Lead Time")
-box
+x11();box
 
+p <- ggplot(data_final,aes(x=years, y= goodness,colour = lead))
+p <- p + geom_line()
+p <- p + facet_wrap(~trimester) + theme_bw()
+p
