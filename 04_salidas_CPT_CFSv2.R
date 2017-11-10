@@ -10,16 +10,14 @@ path <- "C:/Users/lllanos/Desktop/cpt_batch/output"
 all_path <- list.files(path,pattern = "index",full.names = T)
 
 name_files <- basename(all_path)
-names_month <- as.numeric(unlist(lapply(strsplit(name_files,"_"),"[",1)))
+names_month <- as.numeric(substr(name_files,1,2))
 lead <- function(x){ 
   cat(paste0(x,"\n"))
-  month=as.numeric(unlist(lapply(strsplit(x,"_"),"[",1)))
+  month=as.numeric(substr(x,1,2))
  
-    if(substr(x,4,6) %in% month.abb){
     l=substr(x,4,6)
-  }else{
-    l=substr(x,3,5)
-  }
+
+ 
   if((month-4)<=0) pos =(month-4)+12  else pos =(month-4)
   if(month.abb[pos]==l) out <- "LT-3"
   else if(month.abb[month-1]==l)out <- "LT-0"
