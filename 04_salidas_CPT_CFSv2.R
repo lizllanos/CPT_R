@@ -5,7 +5,7 @@
 if(require(ggplot2)==FALSE){install.packages("ggplot2")}
 library("ggplot2")
 
-path <- "C:/Users/lllanos/Desktop/cpt_batch/output" 
+path <- "D:\\OneDrive - CGIAR\\Tobackup\\Desktop_111717\\cpt_batch\\output" 
 
 all_path <- list.files(path,pattern = "index",full.names = T)
 
@@ -44,8 +44,13 @@ box <- box + scale_x_discrete( labels = c("MAM","AMJ","ASO","DEF"))
 box <- box + geom_boxplot( width=0.6, position = position_dodge(width = 0.7))
 box <- box + labs(y="Goodness index", x="Season",fill="Lead Time")
 x11();box
+ggsave("boxplot_goodness.tiff")
 
+data_final$trimester = as.factor(data_final$trimester)
+levels(data_final$trimester) <- c("MAM","AMJ","ASO","DEF")
 p <- ggplot(data_final,aes(x=years, y= goodness,colour = lead))
 p <- p + geom_line()
-p <- p + facet_wrap(~trimester) + theme_bw()
-p
+p <- p + facet_wrap(~trimester) + theme_bw() +labs(y="Goodness index", x="Years",colour="Lead Time")
+x11();p
+ggsave("lineplot_goodness.tiff")
+
