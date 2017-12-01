@@ -1,9 +1,12 @@
 run_cpt=function(x,y,i_fores,path_run,output){
   
-  GI=paste0(output,"_goodness_index.txt"); pear=paste0(output,"_pearson.txt"); afc=paste0(output,"_kendall.txt")
+  GI=paste0(output,"_goodness_index.txt"); pear=paste0(output,"_pearson.txt"); afc=paste0(output,"_2afc.txt")
   prob=paste0(output,"_prob.txt"); cc=paste0(output,"_modos_cc.txt"); x_load=paste0(output,"_x_load.txt"); x_serie=paste0(output,"_x_serie.txt"); y_load=paste0(output,"_y_load.txt") 
   y_serie=paste0(output,"_y_serie.txt"); det_forecast=paste0(output,"_det_forecast.txt"); det_forecast_limit=paste0(output,"_det_forecast_limit.txt")
   roc_a=paste0(output,"_roc_a.txt");roc_b=paste0(output ,"_roc_b.txt")
+  
+  prob_rt=paste0(output,"_prob_rt.txt"); det_forecast_rt=paste0(output,"_det_forecast_rt.txt"); det_forecast_limit_rt=paste0(output,"_det_forecast_limit_rt.txt")
+  pear_rt=paste0(output,"_pearson_rt.txt"); afc_rt=paste0(output,"_2afc_rt.txt"); roc_a_rt=paste0(output,"_roc_a_rt.txt"); roc_b_rt=paste0(output ,"_roc_b_rt.txt")
   
   cmd <- "@echo off
   (
@@ -84,9 +87,30 @@ run_cpt=function(x,y,i_fores,path_run,output){
   echo 111
   echo 513
   echo %path_det_forecast_limit%
+  echo 111
+  echo 203
+  echo %path_prob_rt% 
+  echo 111
+  echo 202
+  echo %path_det_forecast_rt% 
+  echo 111
+  echo 204
+  echo %path_det_forecast_limit_rt% 
   echo 401
   echo %path_cc%
   echo 0
+  echo 423
+  echo 1
+  echo %path_pear_rt% 
+  echo 423
+  echo 3
+  echo %path_2afc_rt% 
+  echo 423
+  echo 10
+  echo %path_roc_b_rt% 
+  echo 423
+  echo 11
+  echo %path_roc_a_rt% 
   echo 0
   ) | CPT_batch.exe"
   
@@ -109,6 +133,14 @@ run_cpt=function(x,y,i_fores,path_run,output){
   cmd<-gsub("%path_y_serie%",y_serie,cmd)
   cmd<-gsub("%path_det_forecast%",det_forecast,cmd)
   cmd<-gsub("%path_det_forecast_limit%",det_forecast_limit,cmd)
+  
+  cmd<-gsub("%path_pear_rt%",pear_rt,cmd)
+  cmd<-gsub("%path_2afc_rt%",afc_rt,cmd)
+  cmd<-gsub("%path_roc_b_rt%",roc_b_rt,cmd)
+  cmd<-gsub("%path_roc_a_rt%",roc_a_rt,cmd)
+  cmd<-gsub("%path_prob_rt%",prob_rt,cmd)
+  cmd<-gsub("%path_det_forecast_rt%",det_forecast_rt,cmd)
+  cmd<-gsub("%path_det_forecast_limit_rt%",det_forecast_limit_rt,cmd)
   
   
   write(cmd,path_run)
