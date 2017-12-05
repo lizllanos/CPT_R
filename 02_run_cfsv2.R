@@ -6,7 +6,7 @@
 # Function Run CPT batch -----------------------------------------------------------
 
 
-setwd("C:/Users/lllanos/Desktop/cpt_batch")
+setwd("D:\\OneDrive - CGIAR\\Tobackup\\Desktop_111717\\cpt_batch")
 dir.create("output")
 
 run_cpt=function(x,y,trim,GI,pear,afc,prob,roc_a,roc_b,cc,path_run,m_x,m_y,m_cca,t, n_training,x_load, 
@@ -166,7 +166,7 @@ for (i in 1:length(x.files)){
   
   run_cpt(x = paste0("input/CFSV2/",x.files[i]),y="input/honduras_chirps_data.txt", trim=trim,
         GI=paste0("output/",out.name,"goodness_index.txt"),pear=paste0("output/",out.name,"pearson.txt"),afc=paste0("output/",out.name,"kendall.txt"),
-        prob=paste0("output/",out.name,"prob.txt"),cc=paste0("output/",out.name,"modos_cc.txt"),path_run=paste0("run_",out.name,".bat"),m_x=5,m_y=5,m_cca=3,t=541,
+        prob=paste0("output/",out.name,"prob.txt"),cc=paste0("output/",out.name,"modos_cc.txt"),path_run=paste0("run_",out.name,".bat"),m_x=10,m_y=10,m_cca=5,t=541,
         x_load=paste0("output/",out.name,"x_load.txt"), x_serie=paste0("output/",out.name,"x_serie.txt"),y_load=paste0("output/",out.name,"y_load.txt"),
         y_serie=paste0("output/",out.name,"y_serie.txt"),det_forecast=paste0("output/",out.name,"det_forecast.txt"),det_forecast_limit=paste0("output/",out.name,"det_forecast_limit.txt"),
         roc_a=paste0("output/",out.name,"roc_a.txt"),roc_b=paste0("output/",out.name,"roc_b.txt"),
