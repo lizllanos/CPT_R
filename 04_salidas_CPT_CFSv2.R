@@ -5,7 +5,7 @@
 if(require(ggplot2)==FALSE){install.packages("ggplot2")}
 library("ggplot2")
 
-path <- "D:\\OneDrive - CGIAR\\Tobackup\\Desktop_111717\\cpt_batch\\output" 
+path <- "D:\\OneDrive - CGIAR\\Tobackup\\Desktop_111717\\cpt_batch\\tsm/output" 
 
 all_path <- list.files(path,pattern = "index",full.names = T)
 
@@ -36,21 +36,21 @@ data_final <- do.call(what = "rbind",args =data_combi)
 data_final$lead=factor(data_final$lead,levels(data_final$lead))
 
 data_final$years <- rep(2006:2016,length(value_good))
-write.csv(data_final,"goodness_all_cfsv2_new.csv",row.names = F)
+write.csv(data_final,"goodness_all_cfsv2.csv",row.names = F)
 
 
 box <- ggplot(data_final, aes(as.factor(trimester), goodness, fill = lead))
 box <- box + scale_x_discrete( labels = c("MAM","AMJ","ASO","DEF"))
 box <- box + geom_boxplot( width=0.6, position = position_dodge(width = 0.7))
-box <- box + labs(y="Goodness index", x="Season",fill="Lead Time")
+box <- box + labs(y="Goodness index", x="Season",fill="Lead Time") + ylim(0,0.4)
 x11();box
-ggsave("boxplot_goodness2.tiff")
+ggsave("boxplot_goodness.tiff")
 
 data_final$trimester = as.factor(data_final$trimester)
 levels(data_final$trimester) <- c("MAM","AMJ","ASO","DEF")
 p <- ggplot(data_final,aes(x=years, y= goodness,colour = lead))
 p <- p + geom_line()
-p <- p + facet_wrap(~trimester) + theme_bw() +labs(y="Goodness index", x="Years",colour="Lead Time")
+p <- p + facet_wrap(~trimester) + theme_bw() +labs(y="Goodness index", x="Years",colour="Lead Time") + ylim(0,0.4)
 x11();p
-ggsave("lineplot_goodness2.tiff")
+ggsave("lineplot_goodness.tiff")
 

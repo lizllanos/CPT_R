@@ -22,7 +22,7 @@ i_month <- c(12,3,4,8,12,3,4,8,12,3,4,8)
 ic <- c(11,2,3,7,8,11,12,4,6,9,10,2)
 firs_year <- 1981
 last_year <- 2016
-dir_save <- "C:/Users/lllanos/Desktop/Prec_CFSv2"
+dir_save <- "D:/OneDrive - CGIAR/Tobackup/Desktop_111717/cpt_batch/tsm/ersst/input"
 
 Map(download_CFSV2_CPT,firs_year,last_year,i_month,ic,dir_save)
 
