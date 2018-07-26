@@ -49,7 +49,7 @@ run_cpt=function(x,y,i_fores,path_run,output){
   echo 112
   echo %path_GI%
   echo 312 
-  echo 24 
+  echo 25 
   echo 1
   echo 451
   echo 454

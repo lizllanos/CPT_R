@@ -15,7 +15,7 @@ lead <- function(x){
   cat(paste0(x,"\n"))
   month=as.numeric(substr(x,1,2))
  
-    l=substr(x,4,6)
+  l=substr(x,4,6)
 
  
   if((month-4)<=0) pos =(month-4)+12  else pos =(month-4)
