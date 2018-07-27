@@ -1,8 +1,8 @@
 if(require(ggplot2)==FALSE){install.packages("ggplot2")}
 library("ggplot2")
 
-path <- "C:/Users/dagudelo/Desktop/CPT/output" 
-
+path <- "D:/OneDrive - CGIAR/Tobackup/Desktop_111717/cpt_batch/prec_obs/tsm/ERSST/output" 
+setwd("D:/OneDrive - CGIAR/Tobackup/Desktop_111717/cpt_batch/prec_obs/tsm/ERSST")
 all_path <- list.files(path,pattern = "index",full.names = T)
 
 name_files <- basename(all_path)
@@ -27,9 +27,10 @@ data_combi <- Map(function(x,y,z) cbind.data.frame(trimester=z,lead=x,goodness=y
 data_final <- do.call(what = "rbind",args =data_combi)
 data_final$lead=factor(data_final$lead,levels(data_final$lead)[c(2,1,3)])
 
-data_final$years <- rep(2006:2016,length(value_good))
+data_final$years <- rep(2005:2016,length(value_good))
 write.csv(data_final,"goodness_all_cfsv2.csv",row.names = F)
 
+data_final <- data_final[data_final$years>2005,]
 box <- ggplot(data_final, aes(as.factor(trimester), goodness, fill = lead))
 box <- box + scale_x_discrete( labels = c("MAM","AMJ","ASO","DEF"))
 box <- box + geom_boxplot( width=0.6, position = position_dodge(width = 0.7))
@@ -45,4 +46,5 @@ p <- ggplot(data_final,aes(x=years, y= goodness,colour = lead))
 p <- p + geom_line()
 p <- p + facet_wrap(~trimester) + theme_bw() +labs(y="Goodness index", x="Years",colour="Lead Time")
 x11();p
+ggsave("lineplot_goodness.tiff")
 
