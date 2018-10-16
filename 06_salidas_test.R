@@ -11,7 +11,7 @@ data_ersst <- data_ersst[data_ersst$years>2006 & data_ersst$years<2017,]
 data_ersst$trimester <- factor(data_ersst$trimester,labels = c("MAM","AMJ","ASO","DEF"))
 data_ersst$selection <- factor(data_ersst$selection,labels = c("Optimized", "Complete"))
 
-# data_ersst2 = data_ersst[data_ersst$variable_y=="CHIRPS",]
+ data_ersst2 = data_ersst[data_ersst$variable_y=="CHIRPS",]
 # data_ersst3 = data_ersst[data_ersst$variable_y=="Observado",]
 
 x11()
@@ -80,23 +80,68 @@ ggsave("density_ersst.tiff")
 
 
 # Resumenes ---------------------------------------------------------------
+# m_cfs <- aggregate(data_cfs$goodness,list(data_cfs$selection, data_cfs$trimester),mean)
+# md_cfs <- aggregate(data_cfs$goodness,list(data_cfs$selection, data_cfs$trimester),median)
+# sd_cfs <- aggregate(data_cfs$goodness,list(data_cfs$selection, data_cfs$trimester),sd)
 
+#result <- data.frame(m_cfs,md_cfs$x, sd_cfs$x)
 
-m_cfs <- aggregate(data_cfs$goodness,list(data_cfs$selection, data_cfs$trimester),mean)
-md_cfs <- aggregate(data_cfs$goodness,list(data_cfs$selection, data_cfs$trimester),median)
-sd_cfs <- aggregate(data_cfs$goodness,list(data_cfs$selection, data_cfs$trimester),sd)
+# Test para cfsv2
+data_cfs_c <- data_cfs[data_cfs$variable_y=="CHIRPS",]
 
-result <- data.frame(m_cfs,md_cfs$x, sd_cfs$x)
-d_test <- matrix(NA, 4,4)
+d_test_c <- matrix(NA, 4,4)
 for (trim in 1:4){
-  dif <- data_cfs$goodness[data_cfs$selection=="Complete" & data_cfs$trimester==unique(data_cfs$trimester)[trim]]-data_cfs$goodness[data_cfs$selection=="Optimized" & data_cfs$trimester==unique(data_cfs$trimester)[trim]]
+  dif <- data_cfs_c$goodness[data_cfs_c$selection=="Sin_Seleccion" & data_cfs_c$trimester==unique(data_cfs_c$trimester)[trim]]-data_cfs_c$goodness[data_cfs_c$selection=="Con_Seleccion" & data_cfs_c$trimester==unique(data_cfs_c$trimester)[trim]]
   test <- wilcox.test(dif, conf.int=T)
-  d_test[trim,1:2] <- test$conf.int
-  d_test[trim,3] <- test$p.value
-  d_test[trim,4] <- test$estimate
+  d_test_c[trim,1:2] <- test$conf.int
+  d_test_c[trim,3] <- test$p.value
+  d_test_c[trim,4] <- test$estimate
   
 }
 
+data_cfs_o <- data_cfs[data_cfs$variable_y=="Observed",]
+
+d_test_o <- matrix(NA, 4,4)
+for (trim in 1:4){
+  dif <- data_cfs_o$goodness[data_cfs_o$selection=="Sin_Seleccion" & data_cfs_o$trimester==unique(data_cfs_o$trimester)[trim]]-data_cfs_o$goodness[data_cfs_o$selection=="Con_Seleccion" & data_cfs_o$trimester==unique(data_cfs_o$trimester)[trim]]
+  test <- wilcox.test(dif, conf.int=T)
+  d_test_o[trim,1:2] <- test$conf.int
+  d_test_o[trim,3] <- test$p.value
+  d_test_o[trim,4] <- test$estimate
+  
+}
+
+all_cfs_t <- cbind(y = rep(c("CH","Ob" ),each=4),rbind(d_test_c,d_test_o))
+rm(d_test_c, d_test_o)
+
+# test para ersst
+data_ersst_c <- data_ersst[data_ersst$variable_y=="CHIRPS",]
+
+d_test_c <- matrix(NA, 4,4)
+for (trim in 1:4){
+  dif <- data_ersst_c$goodness[data_ersst_c$selection=="Sin_Seleccion" & data_ersst_c$trimester==unique(data_ersst_c$trimester)[trim]]-data_ersst_c$goodness[data_ersst_c$selection=="Con_Seleccion" & data_ersst_c$trimester==unique(data_ersst_c$trimester)[trim]]
+  test <- wilcox.test(dif, conf.int=T)
+  d_test_c[trim,1:2] <- test$conf.int
+  d_test_c[trim,3] <- test$p.value
+  d_test_c[trim,4] <- test$estimate
+  
+}
+
+data_ersst_o <- data_ersst[data_ersst$variable_y=="Observed",]
+
+d_test_o <- matrix(NA, 4,4)
+for (trim in 1:4){
+  dif <- data_ersst_o$goodness[data_ersst_o$selection=="Sin_Seleccion" & data_ersst_o$trimester==unique(data_ersst_o$trimester)[trim]]-data_ersst_o$goodness[data_ersst_o$selection=="Con_Seleccion" & data_ersst_o$trimester==unique(data_ersst_o$trimester)[trim]]
+  test <- wilcox.test(dif, conf.int=T)
+  d_test_o[trim,1:2] <- test$conf.int
+  d_test_o[trim,3] <- test$p.value
+  d_test_o[trim,4] <- test$estimate
+  
+}
+
+all_ersst_t <- cbind(y = rep(c("CH","Ob" ),each=4),rbind(d_test_c,d_test_o))
+
+rm(d_test_c, d_test_o)
 
 
 # geom bar ----------------------------------------------------------------
@@ -104,8 +149,8 @@ for (trim in 1:4){
 data_bar <- read.table("clipboard", header = T)
 data_bar
 x11()
-ggplot(data_bar, aes(x=trim, y=diff, group=1)) +
+ggplot(data_bar, aes(x=trimester, y=diff, group=1)) +
   geom_point() +
   geom_errorbar(width=.1, aes(ymin=Li, ymax=Ls), colour="red")+
-  labs(x = "Season", y="Difference")
+  labs(x = "Season", y="Difference")+facet_grid(as.factor(variable_y)~variable_x)
 ggsave("interval.tiff")
