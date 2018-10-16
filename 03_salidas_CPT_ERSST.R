@@ -1,8 +1,8 @@
 if(require(ggplot2)==FALSE){install.packages("ggplot2")}
 library("ggplot2")
 
-path <- "D:/OneDrive - CGIAR/Tobackup/Desktop_111717/cpt_batch/prec_obs/tsm/ERSST/output" 
-setwd("D:/OneDrive - CGIAR/Tobackup/Desktop_111717/cpt_batch/prec_obs/tsm/ERSST")
+path <- "D:/OneDrive - CGIAR/Tobackup/CIAT/Projects/TNC-Honduras/cpt_batch/prec_chirps/sin selección/tsm/ERSST/ERSST/output" 
+setwd("D:/OneDrive - CGIAR/Tobackup/CIAT/Projects/TNC-Honduras/cpt_batch/prec_obs/sin_seleccion/tsm/ERSST")
 all_path <- list.files(path,pattern = "index",full.names = T)
 
 name_files <- basename(all_path)
@@ -28,9 +28,14 @@ data_final <- do.call(what = "rbind",args =data_combi)
 data_final$lead=factor(data_final$lead,levels(data_final$lead)[c(2,1,3)])
 
 data_final$years <- rep(2005:2016,length(value_good))
-write.csv(data_final,"goodness_all_cfsv2.csv",row.names = F)
+data_final$years[data_final$trimester==12] <- rep(2006:2017,3)
 
-data_final <- data_final[data_final$years>2005,]
+
+
+data_final <- data_final[data_final$years>2005 & data_final$years<2017,]
+write.csv(data_final,"goodness_all_ersst.csv",row.names = F)
+
+
 box <- ggplot(data_final, aes(as.factor(trimester), goodness, fill = lead))
 box <- box + scale_x_discrete( labels = c("MAM","AMJ","ASO","DEF"))
 box <- box + geom_boxplot( width=0.6, position = position_dodge(width = 0.7))
